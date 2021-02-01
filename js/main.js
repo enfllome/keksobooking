@@ -10,7 +10,7 @@ const getRandomInt = (bottom, top) => {
   return result;
 }
 
-const getRandomFloat = (bottom, top, roundUp) => {
+const getRandomFloat = (bottom, top, roundUp = 2) => {
   const min = Math.ceil(Math.min(bottom, top));
   const max = Math.floor(Math.max(bottom, top));
   const result = Math.abs(Math.random() * (max - min) + min); //Максимум и минимум включаются
