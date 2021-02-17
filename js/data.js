@@ -2,8 +2,8 @@ import {
   getRandomIntNumber,
   getRandomFloatNumber,
   getRandomArrayElement,
-  getNoRepeatElements,
-} from './util.js'
+  getNoRepeatElements
+} from './util.js';
 
 const OFFER_TITLES = [
   'Лучшее предложение',
@@ -88,10 +88,10 @@ const createRandomOffer = () => {
     },
     location: coordinates,
   }
-}
+};
 
 const offers = new Array(OFFERS_COUNT)
   .fill(null)
   .map(() => createRandomOffer());
 
-export {offers}
+export {offers};

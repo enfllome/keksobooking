@@ -8,7 +8,6 @@ const getRandomIntNumber = (bottom, top) => {
 const getRandomFloatNumber = (bottom, top, roundUp = 2) => {
   const min = Math.min(bottom, top);
   const max = Math.max(bottom, top);
-
   const result = Math.abs(Math.random() * (max - min) + min); //Максимум и минимум включаются
   return result.toFixed(roundUp);
 }
@@ -19,11 +18,11 @@ const getRandomArrayElement = (elements) => {
 
 const getNoRepeatElements = (elements) => {
   return elements.filter(() => Math.random() > 0.5);
-}
+};
 
 export {
   getRandomIntNumber,
   getRandomFloatNumber,
   getRandomArrayElement,
-  getNoRepeatElements,
-}
+  getNoRepeatElements
+};
