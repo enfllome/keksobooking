@@ -21,15 +21,15 @@ const HOUSING_TYPE = [
 ]
 
 const CHEK_IN_TIMES = [
-  '12::00',
-  '13::00',
-  '14::00',
+  '12:00',
+  '13:00',
+  '14:00',
 ];
 
 const CHECK_OUT_TIMES = [
-  '12::00',
-  '13::00',
-  '14::00',
+  '12:00',
+  '13:00',
+  '14:00',
 ];
 
 const HOUSING_FEATURES = [
