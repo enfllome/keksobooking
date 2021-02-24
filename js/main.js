@@ -1,2 +1,1 @@
-import  {offers} from  './data.js';
-alert(offers);
+import './similar-card.js';
