@@ -18,7 +18,7 @@ const HOUSING_TYPE = [
   'flat',
   'house',
   'bungalow',
-]
+];
 
 const CHEK_IN_TIMES = [
   '12:00',
@@ -53,18 +53,16 @@ const PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ];
 
-const OFFERS_COUNT = 3;
+const OFFERS_COUNT = 5;
 
 const getRandomCoordinate = () => {
   return {
-    x: getRandomFloatNumber(35.65000, 35.70000),
-    y: getRandomFloatNumber(139.70000, 139.80000),
-  }
-}
+    x: getRandomFloatNumber(35.65, 35.7),
+    y: getRandomFloatNumber(139.7, 139.8),
+  };
+};
 
-const photosList = new Array(getRandomIntNumber(1, PHOTOS.length))
-  .fill(null)
-  .map(() => getRandomArrayElement(PHOTOS));
+const photosList = new Array(getRandomIntNumber(1, PHOTOS.length)).fill(null).map(() => getRandomArrayElement(PHOTOS));
 
 const createRandomOffer = () => {
   const coordinates = getRandomCoordinate();
@@ -77,7 +75,7 @@ const createRandomOffer = () => {
       title: getRandomArrayElement(OFFER_TITLES),
       address: coordinates,
       price: getRandomArrayElement(PRICE_LIST),
-      type:  getRandomArrayElement(HOUSING_TYPE),
+      type: getRandomArrayElement(HOUSING_TYPE),
       rooms: getRandomIntNumber(1, 5),
       guests: getRandomIntNumber(1, 3),
       checkin: getRandomArrayElement(CHEK_IN_TIMES),
@@ -87,11 +85,9 @@ const createRandomOffer = () => {
       photos: photosList,
     },
     location: coordinates,
-  }
+  };
 };
 
-const offers = new Array(OFFERS_COUNT)
-  .fill(null)
-  .map(() => createRandomOffer());
+const offers = new Array(OFFERS_COUNT).fill(null).map(() => createRandomOffer());
 
-export {offers};
+export { offers };
