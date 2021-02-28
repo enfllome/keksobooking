@@ -2,6 +2,7 @@ const housingType = document.querySelector('#type');
 const priceForNight = document.querySelector('#price');
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
+const formElementTime = document.querySelector('.ad-form__element--time');
 
 housingType.addEventListener('change', (evt) => {
   switch ( evt.target.value ) {
@@ -28,11 +29,7 @@ housingType.addEventListener('change', (evt) => {
   }
 });
 
-timeIn.addEventListener('change', (evt) => {
-  timeOut.value = evt.target.value;
+formElementTime.addEventListener('change', (evt) => {
+  timeIn.value = evt.target.value
+  timeOut.value = evt.target.value
 });
-
-timeOut.addEventListener('change', (evt) => {
-  timeIn.value = evt.target.value;
-});
-
