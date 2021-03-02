@@ -5,6 +5,7 @@ const timeOut = document.querySelector('#timeout');
 const formElementTime = document.querySelector('.ad-form__element--time');
 
 housingType.addEventListener('change', (evt) => {
+
   switch (evt.target.value) {
     case 'palace':
       priceForNight.value = '';
