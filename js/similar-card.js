@@ -22,7 +22,7 @@ offerTitle.textContent = offers[0].offer.title; // Вывод заголовка
 offerAddress.textContent = offers[0].offer.address.x + ' ' +  offers[0].offer.address.y // Вывод координат
 offerPrice.textContent =  offers[0].offer.price + ' ₽/ночь'; // Вывод цены
 
-switch( offers[0].offer.type) {
+switch( offers[0].offer.type ) {
   case 'palace':
     offerType.textContent = 'Дворец';
     break;
