@@ -62,7 +62,9 @@ const getRandomCoordinate = () => {
   };
 };
 
-const photosList = new Array(getRandomIntNumber(1, PHOTOS.length)).fill(null).map(() => getRandomArrayElement(PHOTOS));
+const photosList = new Array(getRandomIntNumber(1, PHOTOS.length))
+  .fill(null)
+  .map(() => getRandomArrayElement(PHOTOS));
 
 const createRandomOffer = () => {
   const coordinates = getRandomCoordinate();
@@ -88,6 +90,8 @@ const createRandomOffer = () => {
   };
 };
 
-const offers = new Array(OFFERS_COUNT).fill(null).map(() => createRandomOffer());
+const offers = new Array(OFFERS_COUNT)
+  .fill(null)
+  .map(() => createRandomOffer());
 
 export { offers };
