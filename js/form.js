@@ -4,11 +4,17 @@ const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
 const formElementTime = document.querySelector('.ad-form__element--time');
 const headlineInput = document.querySelector('#title');
-const roomNumberInut = document.querySelector('#room_number');
-const capacityInput = document.querySelector('#capacity');
+const roomsInput = document.querySelector('#room_number');
+const guestsInput = document.querySelector('#capacity');
 
 const MIN_HEADLINE_LENGTH = 30;
 const MAX_HEADLINE_LENGTH = 100;
+const GUESTS_IN_ROOMS = { // Соответствие комнат и гостей по индексам
+  0: [2],
+  1: [1, 2],
+  2: [0, 1, 2],
+  3: [3],
+};
 
 housingType.addEventListener('change', (evt) => {
   switch (evt.target.value) {
@@ -53,10 +59,19 @@ headlineInput.addEventListener('input', (evt) => {
   headlineInput.reportValidity();
 });
 
-roomNumberInut.addEventListener('change', (evt) => {
-  capacityInput.value = evt.target.value;
-});
+const checkGuestsInRooms = () => {
+  return GUESTS_IN_ROOMS[roomsInput.selectedIndex].includes(guestsInput.selectedIndex);
+}
 
-capacityInput.addEventListener('change', (evt) => {
-  roomNumberInut.value = evt.target.value;
-});
+const onRoomsGuests = (evt) => {
+  const valid = checkGuestsInRooms();
+  if(valid) {
+    evt.target.setCustomValidity('')
+  } else {
+    evt.target.setCustomValidity('Проверьте данные')
+  }
+  evt.target.reportValidity();
+}
+
+roomsInput.addEventListener('change', onRoomsGuests);
+guestsInput.addEventListener('change', onRoomsGuests);
