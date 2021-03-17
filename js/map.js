@@ -1,11 +1,14 @@
 /* global L:readonly */
 import {
   goToInactiveState,
-  goToActiveState
+  goToActiveState,
+  showAlert
 } from './util.js';
-
 import { createAdCard } from './similar-card.js';
-import { getData, URL_DATA } from './api.js';
+import {
+  getData,
+  URL_DATA
+} from './api.js';
 
 
 const adForm = document.querySelector('.ad-form');
@@ -16,6 +19,10 @@ const mapFilterItems = Array.from(mapFilterChildren);
 const addressValue = document.querySelector('#address');
 const mainCoordinateLat = 35.68331;
 const mainCoordinateLng = 139.7631;
+
+const showError = () => {
+  showAlert('Данные объявлений не загружены, попробуйте позже')
+}
 
 goToInactiveState(mapFilters, adForm, allFieldset, mapFilterItems);
 
@@ -47,7 +54,8 @@ const map = L.map('map-canvas')
             keepInView: true,
           });
         });
-      });
+      },
+      showError);
   })
   .setView(
     {
@@ -88,3 +96,9 @@ mainMarker.on('moveend', (evt) => {
   let coordinateLng = coordinateValue.lng;
   addressValue.value = `${coordinateLat.toFixed(ROUND_UP)}, ${coordinateLng.toFixed(ROUND_UP)}`;
 });
+
+export {
+  mainMarker,
+  mainCoordinateLat,
+  mainCoordinateLng
+}
