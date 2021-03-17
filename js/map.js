@@ -21,7 +21,7 @@ goToInactiveState(mapFilters, adForm, allFieldset, mapFilterItems);
 const map = L.map('map-canvas')
   .on('load', () => {
     goToActiveState(mapFilters, adForm, allFieldset, mapFilterItems);
-    addressValue.setAttribute('disabled', 'disabled');
+    addressValue.setAttribute('readonly', 'readonly');
     addressValue.value = `${mainCoordinateLat}, ${mainCoordinateLng}`;
   })
   .setView(
