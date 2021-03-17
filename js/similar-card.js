@@ -16,7 +16,7 @@ const createAdCard = (offersItem) => {
   const offerAvatar = card.querySelector('.popup__avatar');
 
   offerTitle.textContent = offersItem.offer.title;
-  offerAddress.textContent = offersItem.offer.address.x + ' ' + offersItem.offer.address.y; // Вывод координат
+  offerAddress.textContent = offersItem.offer.address; // Вывод координат
   offerPrice.textContent = offersItem.offer.price + ' ₽/ночь';
 
   switch (offersItem.offer.type) {

@@ -4,8 +4,9 @@ import {
   goToActiveState
 } from './util.js';
 
-import { offers } from './data.js';
 import { createAdCard } from './similar-card.js';
+import { getData, URL_DATA } from './api.js';
+
 
 const adForm = document.querySelector('.ad-form');
 const allFieldset = adForm.querySelectorAll('fieldset');
@@ -23,6 +24,30 @@ const map = L.map('map-canvas')
     goToActiveState(mapFilters, adForm, allFieldset, mapFilterItems);
     addressValue.setAttribute('readonly', 'readonly');
     addressValue.value = `${mainCoordinateLat}, ${mainCoordinateLng}`;
+    getData(
+      URL_DATA,
+      (offers) => {
+        offers.forEach((offersItem) => {
+          const pinIcon = L.icon({
+            iconUrl: './img/pin.svg',
+            iconSize: [42, 42],
+            iconAnchor: [21, 42],
+          });
+          const marker = L.marker(
+            {
+              lat: offersItem.location.lat,
+              lng: offersItem.location.lng,
+            },
+            {
+              icon: pinIcon,
+            },
+          );
+
+          marker.addTo(map).bindPopup(createAdCard(offersItem), {
+            keepInView: true,
+          });
+        });
+      });
   })
   .setView(
     {
@@ -62,25 +87,4 @@ mainMarker.on('moveend', (evt) => {
   let coordinateLat = coordinateValue.lat;
   let coordinateLng = coordinateValue.lng;
   addressValue.value = `${coordinateLat.toFixed(ROUND_UP)}, ${coordinateLng.toFixed(ROUND_UP)}`;
-});
-
-offers.forEach((offersItem) => {
-  const pinIcon = L.icon({
-    iconUrl: './img/pin.svg',
-    iconSize: [42, 42],
-    iconAnchor: [21, 42],
-  });
-  const marker = L.marker(
-    {
-      lat: offersItem.location.x,
-      lng: offersItem.location.y,
-    },
-    {
-      icon: pinIcon,
-    },
-  );
-
-  marker.addTo(map).bindPopup(createAdCard(offersItem), {
-    keepInView: true,
-  });
 });
