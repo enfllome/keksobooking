@@ -1,11 +1,15 @@
 /* global L:readonly */
 import {
   goToInactiveState,
-  goToActiveState
+  goToActiveState,
+  showAlert
 } from './util.js';
-
-import { offers } from './data.js';
 import { createAdCard } from './similar-card.js';
+import {
+  getData,
+  URL_DATA
+} from './api.js';
+
 
 const adForm = document.querySelector('.ad-form');
 const allFieldset = adForm.querySelectorAll('fieldset');
@@ -16,13 +20,42 @@ const addressValue = document.querySelector('#address');
 const mainCoordinateLat = 35.68331;
 const mainCoordinateLng = 139.7631;
 
+const showError = () => {
+  showAlert('Данные объявлений не загружены, попробуйте позже')
+}
+
 goToInactiveState(mapFilters, adForm, allFieldset, mapFilterItems);
 
 const map = L.map('map-canvas')
   .on('load', () => {
     goToActiveState(mapFilters, adForm, allFieldset, mapFilterItems);
-    addressValue.setAttribute('disabled', 'disabled');
+    addressValue.setAttribute('readonly', 'readonly');
     addressValue.value = `${mainCoordinateLat}, ${mainCoordinateLng}`;
+    getData(
+      URL_DATA,
+      (offers) => {
+        offers.forEach((offersItem) => {
+          const pinIcon = L.icon({
+            iconUrl: './img/pin.svg',
+            iconSize: [42, 42],
+            iconAnchor: [21, 42],
+          });
+          const marker = L.marker(
+            {
+              lat: offersItem.location.lat,
+              lng: offersItem.location.lng,
+            },
+            {
+              icon: pinIcon,
+            },
+          );
+
+          marker.addTo(map).bindPopup(createAdCard(offersItem), {
+            keepInView: true,
+          });
+        });
+      },
+      showError);
   })
   .setView(
     {
@@ -64,23 +97,8 @@ mainMarker.on('moveend', (evt) => {
   addressValue.value = `${coordinateLat.toFixed(ROUND_UP)}, ${coordinateLng.toFixed(ROUND_UP)}`;
 });
 
-offers.forEach((offersItem) => {
-  const pinIcon = L.icon({
-    iconUrl: './img/pin.svg',
-    iconSize: [42, 42],
-    iconAnchor: [21, 42],
-  });
-  const marker = L.marker(
-    {
-      lat: offersItem.location.x,
-      lng: offersItem.location.y,
-    },
-    {
-      icon: pinIcon,
-    },
-  );
-
-  marker.addTo(map).bindPopup(createAdCard(offersItem), {
-    keepInView: true,
-  });
-});
+export {
+  mainMarker,
+  mainCoordinateLat,
+  mainCoordinateLng
+}
