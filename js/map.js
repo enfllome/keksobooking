@@ -19,7 +19,6 @@ import {
   checkFeatures
 } from './filter.js';
 
-
 const adForm = document.querySelector('.ad-form');
 const allFieldset = adForm.querySelectorAll('fieldset');
 const mapFilters = document.querySelector('.map__filters');
@@ -32,10 +31,17 @@ const mainCoordinateLng = 139.7631;
 const MAP_SIZE = 13;
 const OFFERS_COUNT = 10;
 
+const showError = () => {
+  showAlert('Данные объявлений не загружены, попробуйте позже')
+  goToInactiveFiltersState(mapFilters, mapFilterItems);
+};
+
+goToInactiveState(mapFilters, adForm, allFieldset, mapFilterItems);
+
 const layerGroup = L.layerGroup();
 
-const createAdMarkers = (offers) => {
-  offers
+const createAdMarkers = (offersList) => {
+  offersList
     .slice()
     .filter((el) => checkHouseType(el))
     .filter((el) => checkPrice(el))
@@ -68,13 +74,6 @@ const createAdMarkers = (offers) => {
       layerGroup.addTo(map);
     });
 };
-
-const showError = () => {
-  showAlert('Данные объявлений не загружены, попробуйте позже')
-  goToInactiveFiltersState(mapFilters, mapFilterItems);
-};
-
-goToInactiveState(mapFilters, adForm, allFieldset, mapFilterItems);
 
 const map = L.map('map-canvas')
   .on('load', () => {

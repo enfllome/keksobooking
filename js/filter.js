@@ -19,7 +19,7 @@ const GUEST_SETTINGS = {
   2: [1],
   3: [0],
 };
-const maxLimit = 10;
+const maxLimit = 150;
 
 const filterHouseType = document.querySelector('#housing-type');
 const filterPrice = document.querySelector('#housing-price');
@@ -29,8 +29,8 @@ const filterFeaturesList = document.querySelector('#housing-features');
 const filterFeaturesItems = filterFeaturesList.querySelectorAll('[name="features"]');
 
 
-let minNumberOfRooms = 1;
-let minNumberOfGuest = 1;
+let minNumberOfRooms = 0;
+let minNumberOfGuest = 0;
 
 while(minNumberOfRooms <= maxLimit) {
   ROOMS_SETTINGS[0].push(minNumberOfRooms++);
@@ -93,4 +93,4 @@ export {
   checkRooms,
   checkGuests,
   checkFeatures
-}
+};
