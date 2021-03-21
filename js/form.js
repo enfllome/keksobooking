@@ -8,8 +8,9 @@ import {
   mainCoordinateLng
 } from './map.js';
 
-import { closePopup } from './util.js';
+import { isEscEvent } from './util.js';
 
+const main = document.querySelector('main');
 const adForm = document.querySelector('.ad-form');
 const housingType = adForm.querySelector('#type');
 const priceForNight = adForm.querySelector('#price');
@@ -115,15 +116,52 @@ const resetForm = () => {
   description.value = '';
 };
 
+const onWindowClickSuccesPopup = () => {
+  successPopup.remove()
+  window.removeEventListener('click', onWindowClickSuccesPopup);
+  window.removeEventListener('keydown', onSuccesPopupEscKeydown);
+};
+
+const onSuccesPopupEscKeydown = (evt) => {
+  if (isEscEvent) {
+    evt.preventDefault();
+    successPopup.remove();
+    window.removeEventListener('keydown', onSuccesPopupEscKeydown);
+    window.removeEventListener('click', onWindowClickSuccesPopup);
+  }
+};
+
 const showSuccess = () => {
   resetForm();
-  document.body.append(successPopup);
-  closePopup(successPopup);
+  main.appendChild(successPopup);
+  window.addEventListener('click', onWindowClickSuccesPopup);
+  window.addEventListener('keydown', onSuccesPopupEscKeydown);
+};
+
+const onWindowErrorPopupClick = () => {
+  errorPopup.remove();
+  window.removeEventListener('click', onWindowErrorPopupClick);
+  window.removeEventListener('keydown', onErrorPopupEscKeydown);
+};
+
+const onErrorPopupEscKeydown = () => {
+  if (isEscEvent) {
+    errorPopup.remove();
+    window.removeEventListener('keydown', onErrorPopupEscKeydown);
+    window.removeEventListener('click', onWindowErrorPopupClick);
+  }
+};
+
+const onErrorButtonClick = () => {
+  errorPopup.remove();
+  errorButton.removeEventListener('click', onErrorButtonClick);
 };
 
 const showError = () => {
-  document.body.append(errorPopup);
-  closePopup(errorPopup, errorButton);
+  main.appendChild(errorPopup);
+  window.addEventListener('click', onWindowErrorPopupClick);
+  window.addEventListener('keydown', onErrorPopupEscKeydown);
+  errorButton.addEventListener('click', onErrorButtonClick);
 };
 
 resetFormBtn.addEventListener('click', (evt) => {
