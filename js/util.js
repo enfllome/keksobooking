@@ -35,6 +35,13 @@ const goToInactiveState = (filters, adForm, fieldsets, filterItem) => {
   });
 };
 
+const goToInactiveFiltersState = (filters, filterItem) => {
+  filters.classList.add('map__filters--disabled');
+  filterItem.forEach((el) => {
+    el.setAttribute('disabled', 'disabled');
+  });
+}
+
 const goToActiveState = (filters, adForm, fieldsets, filterItem) => {
   filters.classList.remove('map__filters--disabled');
   adForm.classList.remove('ad-form--disabled');
@@ -97,6 +104,7 @@ export {
   getNoRepeatElements,
   goToInactiveState,
   goToActiveState,
+  goToInactiveFiltersState,
   showAlert,
   closePopup
 };

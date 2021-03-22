@@ -2,6 +2,7 @@
 import {
   goToInactiveState,
   goToActiveState,
+  goToInactiveFiltersState,
   showAlert
 } from './util.js';
 import { createAdCard } from './similar-card.js';
@@ -9,7 +10,14 @@ import {
   getData,
   URL_DATA
 } from './api.js';
-
+import {
+  checkHouseType,
+  checkPrice,
+  checkRooms,
+  changeElement,
+  checkGuests,
+  checkFeatures
+} from './filter.js';
 
 const adForm = document.querySelector('.ad-form');
 const allFieldset = adForm.querySelectorAll('fieldset');
@@ -20,11 +28,52 @@ const addressValue = document.querySelector('#address');
 const mainCoordinateLat = 35.68331;
 const mainCoordinateLng = 139.7631;
 
+const MAP_SIZE = 13;
+const OFFERS_COUNT = 10;
+
 const showError = () => {
   showAlert('Данные объявлений не загружены, попробуйте позже')
-}
+  goToInactiveFiltersState(mapFilters, mapFilterItems);
+};
 
 goToInactiveState(mapFilters, adForm, allFieldset, mapFilterItems);
+
+const layerGroup = L.layerGroup();
+
+const createAdMarkers = (offersList) => {
+  offersList
+    .slice()
+    .filter((el) => checkHouseType(el))
+    .filter((el) => checkPrice(el))
+    .filter((el) => checkRooms(el))
+    .filter((el) => checkGuests(el))
+    .filter((el) => checkFeatures(el))
+    .slice(0, OFFERS_COUNT)
+    .forEach((offersItem) => {
+      const pinIcon = L.icon({
+        iconUrl: './img/pin.svg',
+        iconSize: [42, 42],
+        iconAnchor: [21, 42],
+      });
+      const marker = L.marker(
+        {
+          lat: offersItem.location.lat,
+          lng: offersItem.location.lng,
+        },
+        {
+          icon: pinIcon,
+        },
+      );
+
+      marker
+        .addTo(layerGroup)
+        .bindPopup(createAdCard(offersItem), {
+          keepInView: true,
+        });
+
+      layerGroup.addTo(map);
+    });
+};
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -34,26 +83,11 @@ const map = L.map('map-canvas')
     getData(
       URL_DATA,
       (offers) => {
-        offers.forEach((offersItem) => {
-          const pinIcon = L.icon({
-            iconUrl: './img/pin.svg',
-            iconSize: [42, 42],
-            iconAnchor: [21, 42],
-          });
-          const marker = L.marker(
-            {
-              lat: offersItem.location.lat,
-              lng: offersItem.location.lng,
-            },
-            {
-              icon: pinIcon,
-            },
-          );
-
-          marker.addTo(map).bindPopup(createAdCard(offersItem), {
-            keepInView: true,
-          });
-        });
+        createAdMarkers(offers);
+        changeElement(() => {
+          layerGroup.clearLayers();
+          createAdMarkers(offers);
+        })
       },
       showError);
   })
@@ -61,7 +95,7 @@ const map = L.map('map-canvas')
     {
       lat: mainCoordinateLat,
       lng: mainCoordinateLng,
-    }, 13);
+    }, MAP_SIZE);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
