@@ -14,10 +14,11 @@ import {
 import {isEscEvent} from './util.js';
 
 const main = document.querySelector('main');
+const filtersForm = document.querySelector('.map__filters');
 const adForm = document.querySelector('.ad-form');
 const housingType = adForm.querySelector('#type');
 const priceForNight = adForm.querySelector('#price');
-const addressValue = document.querySelector('#address');
+const addressValue = adForm.querySelector('#address');
 const timeIn = adForm.querySelector('#timein');
 const timeOut = adForm.querySelector('#timeout');
 const formElementTime = adForm.querySelector('.ad-form__element--time');
@@ -112,6 +113,7 @@ guestsInput.addEventListener('change', onRoomsGuests);
 
 const resetForm = () => {
   adForm.reset();
+  filtersForm.reset();
   resetPreviewImg(avatarPreview, DEFAULT_SRC_IMAGE);
   resetPreviewImg(imgPreview, DEFAULT_SRC_IMAGE);
   addressValue.value = `${mainCoordinateLat}, ${mainCoordinateLng}`;
