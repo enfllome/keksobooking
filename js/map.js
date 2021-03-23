@@ -1,4 +1,5 @@
 /* global L:readonly */
+/* global _:readonly */
 import {
   goToInactiveState,
   goToActiveState,
@@ -30,6 +31,7 @@ const mainCoordinateLng = 139.7631;
 
 const MAP_SIZE = 13;
 const OFFERS_COUNT = 10;
+const DEBOUNSE_DELAY = 500;
 
 const showError = () => {
   showAlert('Данные объявлений не загружены, попробуйте позже')
@@ -84,12 +86,14 @@ const map = L.map('map-canvas')
       URL_DATA,
       (offers) => {
         createAdMarkers(offers);
-        changeElement(() => {
-          layerGroup.clearLayers();
-          createAdMarkers(offers);
-        })
+        changeElement(_.debounce(
+          () => {
+            layerGroup.clearLayers();
+            createAdMarkers(offers);
+          }, DEBOUNSE_DELAY))
       },
-      showError);
+      showError,
+    );
   })
   .setView(
     {

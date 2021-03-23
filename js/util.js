@@ -79,24 +79,6 @@ const isEscEvent = (evt) => {
   return evt.key === 'Escape' || evt.key === 'Esc';
 };
 
-const closePopup = (popup, button) => {
-  window.addEventListener('click', () => {
-    popup.remove();
-  });
-
-  window.addEventListener('keydown', () => {
-    if (isEscEvent) {
-      popup.remove();
-    }
-  });
-
-  if (button) {
-    button.addEventListener('click', () => {
-      popup.remove();
-    });
-  }
-};
-
 export {
   getRandomIntNumber,
   getRandomFloatNumber,
@@ -106,5 +88,5 @@ export {
   goToActiveState,
   goToInactiveFiltersState,
   showAlert,
-  closePopup
+  isEscEvent
 };
