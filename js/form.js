@@ -5,24 +5,33 @@ import {
 import {
   mainMarker,
   mainCoordinateLat,
-  mainCoordinateLng
+  mainCoordinateLng,
+  resetMarkers
 } from './map.js';
-
-import { isEscEvent } from './util.js';
+import {
+  loadImg,
+  resetPreviewImg
+} from './pictures-load.js';
+import {isEscEvent} from './util.js';
 
 const main = document.querySelector('main');
+const filtersForm = document.querySelector('.map__filters');
 const adForm = document.querySelector('.ad-form');
 const housingType = adForm.querySelector('#type');
 const priceForNight = adForm.querySelector('#price');
-const addressValue = document.querySelector('#address');
+const addressValue = adForm.querySelector('#address');
 const timeIn = adForm.querySelector('#timein');
 const timeOut = adForm.querySelector('#timeout');
 const formElementTime = adForm.querySelector('.ad-form__element--time');
 const headlineInput = adForm.querySelector('#title');
 const roomsInput = adForm.querySelector('#room_number');
 const guestsInput = adForm.querySelector('#capacity');
-const description = adForm.querySelector('#description');
 const resetFormBtn = adForm.querySelector('.ad-form__reset');
+
+const avatarFileChooser = adForm.querySelector('.ad-form__field input[type=file]');
+const avatarPreview = adForm.querySelector('.ad-form-header__preview img');
+const imgFileChoicer = adForm.querySelector('.ad-form__upload input[type=file]');
+const imgPreview = adForm.querySelector('.ad-form__photo-preview');
 
 const successTemplate = document.querySelector('#success ').content;
 const newSuccessTemplate = successTemplate.querySelector('.success');
@@ -33,6 +42,7 @@ const newErrorTemplate = errorTemplate.querySelector('.error')
 const errorPopup = newErrorTemplate.cloneNode(true);
 const errorButton = errorPopup.querySelector('.error__button');
 
+const DEFAULT_SRC_IMAGE = 'img/muffin-grey.svg';
 const MIN_HEADLINE_LENGTH = 30;
 const MAX_HEADLINE_LENGTH = 100;
 const GUESTS_IN_ROOMS = { // Соответствие комнат и гостей по индексам
@@ -103,7 +113,11 @@ roomsInput.addEventListener('change', onRoomsGuests);
 guestsInput.addEventListener('change', onRoomsGuests);
 
 const resetForm = () => {
-  headlineInput.value = '';
+  adForm.reset();
+  filtersForm.reset();
+  resetMarkers();
+  resetPreviewImg(avatarPreview, DEFAULT_SRC_IMAGE);
+  resetPreviewImg(imgPreview, DEFAULT_SRC_IMAGE);
   addressValue.value = `${mainCoordinateLat}, ${mainCoordinateLng}`;
   mainMarker.setLatLng([mainCoordinateLat, mainCoordinateLng]);
   housingType.value = 'flat';
@@ -113,7 +127,6 @@ const resetForm = () => {
   timeOut.value = '12:00';
   roomsInput.value = '1';
   guestsInput.value = '1';
-  description.value = '';
 };
 
 const onWindowClickSuccesPopup = () => {
@@ -174,3 +187,6 @@ adForm.addEventListener('submit', (evt) => {
   const data = new FormData(evt.target);
   sendData(URL_SERVER, showSuccess, showError, data)
 });
+
+loadImg(avatarFileChooser, avatarPreview);
+loadImg(imgFileChoicer, imgPreview);
