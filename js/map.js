@@ -77,6 +77,22 @@ const createAdMarkers = (offersList) => {
     });
 };
 
+const resetMarkers = () => {
+  layerGroup.remove();
+  getData(
+    URL_DATA,
+    (offers) => {
+      createAdMarkers(offers);
+      changeElement(_.debounce(
+        () => {
+          layerGroup.clearLayers();
+          createAdMarkers(offers);
+        }, DEBOUNSE_DELAY))
+    },
+    showError,
+  );
+}
+
 const map = L.map('map-canvas')
   .on('load', () => {
     goToActiveState(mapFilters, adForm, allFieldset, mapFilterItems);
@@ -138,5 +154,6 @@ mainMarker.on('moveend', (evt) => {
 export {
   mainMarker,
   mainCoordinateLat,
-  mainCoordinateLng
+  mainCoordinateLng,
+  resetMarkers
 }

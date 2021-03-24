@@ -5,7 +5,8 @@ import {
 import {
   mainMarker,
   mainCoordinateLat,
-  mainCoordinateLng
+  mainCoordinateLng,
+  resetMarkers
 } from './map.js';
 import {
   loadImg,
@@ -114,6 +115,7 @@ guestsInput.addEventListener('change', onRoomsGuests);
 const resetForm = () => {
   adForm.reset();
   filtersForm.reset();
+  resetMarkers();
   resetPreviewImg(avatarPreview, DEFAULT_SRC_IMAGE);
   resetPreviewImg(imgPreview, DEFAULT_SRC_IMAGE);
   addressValue.value = `${mainCoordinateLat}, ${mainCoordinateLng}`;
