@@ -1,3 +1,7 @@
+const LOWER_PRICE_RANGE = 0;
+const UPPER_PRICE_RANGE = 50000;
+const MIDDLE_PRICE_RANGE = 10000;
+
 const HOUSE_TYPE_SETTINGS = {
   0: ['flat', 'palace', 'house', 'bungalow'],
   1: ['palace'],
@@ -21,13 +25,12 @@ const GUEST_SETTINGS = {
 };
 const maxLimit = 150;
 
+const filtersForm = document.querySelector('.map__filters');
 const filterHouseType = document.querySelector('#housing-type');
 const filterPrice = document.querySelector('#housing-price');
 const filterRooms = document.querySelector('#housing-rooms');
 const filterGuests = document.querySelector('#housing-guests');
 const filterFeaturesList = document.querySelector('#housing-features');
-const filterFeaturesItems = filterFeaturesList.querySelectorAll('[name="features"]');
-
 
 let minNumberOfRooms = 0;
 let minNumberOfGuest = 0;
@@ -45,13 +48,13 @@ const checkHouseType = (object) => HOUSE_TYPE_SETTINGS[filterHouseType.selectedI
 const checkPrice = (object) => {
   switch (filterPrice.selectedIndex) {
     case 0:
-      return (object.offer.price >= 0);
+      return (object.offer.price >= LOWER_PRICE_RANGE);
     case 1:
-      return (object.offer.price >= 10000 && object.offer.price <= 50000);
+      return (object.offer.price >= MIDDLE_PRICE_RANGE && object.offer.price <= UPPER_PRICE_RANGE);
     case 2:
-      return (object.offer.price < 10000 && object.offer.price >= 0);
+      return (object.offer.price < MIDDLE_PRICE_RANGE && object.offer.price >= LOWER_PRICE_RANGE);
     case 3:
-      return (object.offer.price > 50000);
+      return (object.offer.price > UPPER_PRICE_RANGE);
   }
 };
 
@@ -60,21 +63,9 @@ const checkRooms = (object) => ROOMS_SETTINGS[filterRooms.selectedIndex].include
 const checkGuests = (object) => GUEST_SETTINGS[filterGuests.selectedIndex].includes(object.offer.guests);
 
 const changeElement = (cb) => {
-  filterPrice.addEventListener('change', () => {
+  filtersForm.addEventListener('change', () => {
     cb();
-  });
-  filterHouseType.addEventListener('change', () => {
-    cb();
-  });
-  filterRooms.addEventListener('change', () => {
-    cb();
-  });
-  filterGuests.addEventListener('change', () => {
-    cb();
-  });
-  filterFeaturesItems.forEach((el) => el.addEventListener('change', () => {
-    cb();
-  }));
+  })
 };
 
 const checkFeatures = (object) => {

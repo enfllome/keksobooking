@@ -27,18 +27,18 @@ const goToInactiveState = (filters, adForm, fieldsets, filterItem) => {
   adForm.classList.add('ad-form--disabled');
 
   fieldsets.forEach((el) => {
-    el.setAttribute('disabled', 'disabled');
+    el.disabled = true;
   });
 
   filterItem.forEach((el) => {
-    el.setAttribute('disabled', 'disabled');
+    el.disabled = true;
   });
 };
 
 const goToInactiveFiltersState = (filters, filterItem) => {
   filters.classList.add('map__filters--disabled');
   filterItem.forEach((el) => {
-    el.setAttribute('disabled', 'disabled');
+    el.disabled = true;
   });
 }
 
@@ -47,11 +47,11 @@ const goToActiveState = (filters, adForm, fieldsets, filterItem) => {
   adForm.classList.remove('ad-form--disabled');
 
   fieldsets.forEach((el) => {
-    el.removeAttribute('disabled');
+    el.disabled = false;
   });
 
   filterItem.forEach((el) => {
-    el.removeAttribute('disabled');
+    el.disabled = false;
   });
 };
 

@@ -20,6 +20,16 @@ import {
   checkFeatures
 } from './filter.js';
 
+const ROUND_UP = 5;
+const MAP_SIZE = 13;
+const PIN_SIZE = 42;
+const MIDDLE_PIN_SIZE = 21;
+const MAIN_PIN_SIZE = 52;
+const MIDDLE_MAIN_PIN_SIZE = 26;
+const OFFERS_COUNT = 10;
+const FIRS_OFFERS_POSITION = 0;
+const DEBOUNSE_DELAY = 500;
+
 const adForm = document.querySelector('.ad-form');
 const allFieldset = adForm.querySelectorAll('fieldset');
 const mapFilters = document.querySelector('.map__filters');
@@ -28,10 +38,6 @@ const mapFilterItems = Array.from(mapFilterChildren);
 const addressValue = document.querySelector('#address');
 const mainCoordinateLat = 35.68331;
 const mainCoordinateLng = 139.7631;
-
-const MAP_SIZE = 13;
-const OFFERS_COUNT = 10;
-const DEBOUNSE_DELAY = 500;
 
 const showError = () => {
   showAlert('Данные объявлений не загружены, попробуйте позже')
@@ -45,17 +51,13 @@ const layerGroup = L.layerGroup();
 const createAdMarkers = (offersList) => {
   offersList
     .slice()
-    .filter((el) => checkHouseType(el))
-    .filter((el) => checkPrice(el))
-    .filter((el) => checkRooms(el))
-    .filter((el) => checkGuests(el))
-    .filter((el) => checkFeatures(el))
-    .slice(0, OFFERS_COUNT)
+    .filter((el) => checkHouseType(el) && checkPrice(el) && checkRooms(el) && checkGuests(el) && checkFeatures(el))
+    .slice(FIRS_OFFERS_POSITION, OFFERS_COUNT)
     .forEach((offersItem) => {
       const pinIcon = L.icon({
         iconUrl: './img/pin.svg',
-        iconSize: [42, 42],
-        iconAnchor: [21, 42],
+        iconSize: [PIN_SIZE, PIN_SIZE],
+        iconAnchor: [MIDDLE_PIN_SIZE, PIN_SIZE],
       });
       const marker = L.marker(
         {
@@ -96,7 +98,7 @@ const resetMarkers = () => {
 const map = L.map('map-canvas')
   .on('load', () => {
     goToActiveState(mapFilters, adForm, allFieldset, mapFilterItems);
-    addressValue.setAttribute('readonly', 'readonly');
+    addressValue.readOnly = true;
     addressValue.value = `${mainCoordinateLat}, ${mainCoordinateLng}`;
     getData(
       URL_DATA,
@@ -126,8 +128,8 @@ L.tileLayer(
 
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
+  iconSize: [MAIN_PIN_SIZE, MAIN_PIN_SIZE],
+  iconAnchor: [MIDDLE_MAIN_PIN_SIZE, MAIN_PIN_SIZE],
 });
 
 const mainMarker = L.marker(
@@ -145,7 +147,6 @@ mainMarker.addTo(map);
 
 mainMarker.on('moveend', (evt) => {
   const coordinateValue = evt.target.getLatLng();
-  const ROUND_UP = 5;
   let coordinateLat = coordinateValue.lat;
   let coordinateLng = coordinateValue.lng;
   addressValue.value = `${coordinateLat.toFixed(ROUND_UP)}, ${coordinateLng.toFixed(ROUND_UP)}`;

@@ -14,6 +14,20 @@ import {
 } from './pictures-load.js';
 import {isEscEvent} from './util.js';
 
+const PALACE_MIN_PRICE = 10000;
+const FLAT_MIN_PRICE = 1000;
+const HOUSE_MIN_PRICE = 5000;
+const BUNGALOW_MIN_PRICE = 0;
+const DEFAULT_SRC_IMAGE = 'img/muffin-grey.svg';
+const MIN_HEADLINE_LENGTH = 30;
+const MAX_HEADLINE_LENGTH = 100;
+const GUESTS_IN_ROOMS = { // Соответствие комнат и гостей по индексам
+  0: [2],
+  1: [1, 2],
+  2: [0, 1, 2],
+  3: [3],
+};
+
 const main = document.querySelector('main');
 const filtersForm = document.querySelector('.map__filters');
 const adForm = document.querySelector('.ad-form');
@@ -42,37 +56,27 @@ const newErrorTemplate = errorTemplate.querySelector('.error')
 const errorPopup = newErrorTemplate.cloneNode(true);
 const errorButton = errorPopup.querySelector('.error__button');
 
-const DEFAULT_SRC_IMAGE = 'img/muffin-grey.svg';
-const MIN_HEADLINE_LENGTH = 30;
-const MAX_HEADLINE_LENGTH = 100;
-const GUESTS_IN_ROOMS = { // Соответствие комнат и гостей по индексам
-  0: [2],
-  1: [1, 2],
-  2: [0, 1, 2],
-  3: [3],
-};
-
 housingType.addEventListener('change', (evt) => {
   switch (evt.target.value) {
     case 'palace':
       priceForNight.value = '';
-      priceForNight.placeholder = 10000;
-      priceForNight.setAttribute('min', 10000);
+      priceForNight.placeholder = PALACE_MIN_PRICE;
+      priceForNight.min = PALACE_MIN_PRICE;
       break;
     case 'flat':
       priceForNight.value = '';
-      priceForNight.placeholder = 1000;
-      priceForNight.setAttribute('min', 1000);
+      priceForNight.placeholder = FLAT_MIN_PRICE;
+      priceForNight.min = FLAT_MIN_PRICE;
       break;
     case 'house':
       priceForNight.value = '';
-      priceForNight.placeholder = 5000;
-      priceForNight.setAttribute('min', 5000);
+      priceForNight.placeholder = HOUSE_MIN_PRICE;
+      priceForNight.min = HOUSE_MIN_PRICE;
       break;
     case 'bungalow':
       priceForNight.value = '';
-      priceForNight.placeholder = 0;
-      priceForNight.setAttribute('min', 0);
+      priceForNight.placeholder = BUNGALOW_MIN_PRICE;
+      priceForNight.min = BUNGALOW_MIN_PRICE;
       break;
   }
 });
@@ -99,12 +103,17 @@ const checkGuestsInRooms = () => {
   return GUESTS_IN_ROOMS[roomsInput.selectedIndex].includes(guestsInput.selectedIndex);
 }
 
+
 const onRoomsGuests = (evt) => {
   const valid = checkGuestsInRooms();
   if(valid) {
     evt.target.setCustomValidity('')
   } else {
     evt.target.setCustomValidity('Проверьте данные')
+  }
+  if (roomsInput.selectedIndex === 3 && guestsInput.selectedIndex === 3) {
+    roomsInput.setCustomValidity('')
+    guestsInput.setCustomValidity('')
   }
   evt.target.reportValidity();
 }

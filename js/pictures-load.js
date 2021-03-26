@@ -25,4 +25,4 @@ const resetPreviewImg = (preview, imageSrc) => {
   preview.src = imageSrc;
 }
 
-export {loadImg, resetPreviewImg}
+export { loadImg, resetPreviewImg }

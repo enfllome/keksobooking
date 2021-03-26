@@ -37,6 +37,7 @@ const createAdCard = (offersItem) => {
   offerCapacity.textContent = offersItem.offer.rooms + ' комнаты для ' + offersItem.offer.guests + ' гостей'; // Вывод типа жилья, проверенный чз switch
   offerTime.textContent = 'Заезд после ' + offersItem.offer.checkin + ', выезд до ' + offersItem.offer.checkout;
 
+  const featureFragment = document.createDocumentFragment();
   offerFeatures.innerHTML = ''; // Очистил в шаблоне контейнер с 'удобствами'
 
   if (featureList.length === 0) {
@@ -47,11 +48,13 @@ const createAdCard = (offersItem) => {
     // Вывод фич в очищенный контейнер
     const offerFeatureItem = document.createElement('li');
     offerFeatureItem.classList.add('popup__feature', 'popup__feature--' + feature);
-    offerFeatures.appendChild(offerFeatureItem);
+    featureFragment.appendChild(offerFeatureItem);
+    offerFeatures.appendChild(featureFragment)
   });
 
   offerDescription.textContent = offersItem.offer.description;
 
+  const photosFragment = document.createDocumentFragment();
   offerPhotos.innerHTML = ''; // Очистил в шаблоне контейнер с фотографиями жилья
   const photoSrc = offersItem.offer.photos;
 
@@ -59,10 +62,11 @@ const createAdCard = (offersItem) => {
     // Вывод фотографий в очищенный контейнер
     const offerPhotoItem = document.createElement('img');
     offerPhotoItem.classList.add('popup__photo');
-    offerPhotoItem.setAttribute('width', 40);
-    offerPhotoItem.setAttribute('height', 40);
+    offerPhotoItem.width = 40;
+    offerPhotoItem.height = 40;
     offerPhotoItem.src = photoSrc[i];
-    offerPhotos.appendChild(offerPhotoItem);
+    photosFragment.appendChild(offerPhotoItem);
+    offerPhotos.appendChild(photosFragment);
   }
 
   offerAvatar.src = offersItem.author.avatar;
