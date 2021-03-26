@@ -12,7 +12,7 @@ import {
   loadImg,
   resetPreviewImg
 } from './pictures-load.js';
-import {isEscEvent} from './util.js';
+import { isEscEvent } from './util.js';
 
 const PALACE_MIN_PRICE = 10000;
 const FLAT_MIN_PRICE = 1000;
