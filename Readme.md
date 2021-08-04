@@ -7,7 +7,7 @@
 
 #### 1. Демо проекта
 
-Пройти по ссылке: 
+Пройти по ссылке: https://serafima31.github.io/serafim31.github.io/
 
 <img width="769" alt="" src="https://i.ibb.co/LkzPpM4/1628105158320.jpg">
 
